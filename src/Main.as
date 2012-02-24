@@ -35,15 +35,18 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			stage.align = StageAlign.TOP_LEFT;
 			stage.quality = StageQuality.HIGH;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.stageFocusRect = false;
 			
 			StageReference.setStage(stage);
+			FlashVars.APP_ID = FlashVarUtil.getValue("APP_ID");
+			
 			addFBLoading();
 			if (Online()) {
-				Facebook.init(FlashVarUtil.getValue("APP_ID"), onInit);
+				Facebook.init(FlashVars.APP_ID, onInit);
 			}
 			
 			setupButton();
@@ -74,7 +77,7 @@ package
 			connect_btn.mouseEnabled = false;
 			
 			var opts:Object = {};
-			opts.scope = "publish_stream,read_stream";
+			opts.scope = FacebookScope.SCOPE;
 			Facebook.login(onLogin, opts);
 			addFBLoading();
 		}
