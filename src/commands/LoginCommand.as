@@ -1,6 +1,7 @@
 package commands 
 {
 	import com.facebook.graph.Facebook;
+	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import gtap.commands.Command;
 	
@@ -14,6 +15,9 @@ package commands
 			
 		}
 		
+		/**
+		 * Pop up login
+		 */
 		override protected function execute():void
 		{
 			var opts:Object = { "scope":FacebookScope.SCOPE };
@@ -25,22 +29,11 @@ package commands
 			if (result) {
 				t.obj(result);
 				// 已登入
-				_result = true;
+				complete(Event.COMPLETE);
 			} else {
 				// 未登入
-				_result = false;
+				complete(ErrorEvent.ERROR);
 			}
-			complete();
-		}
-		
-		override protected final function complete(e:Event = null):void
-		{
-			if (_result) {
-				
-			}else {
-				
-			}
-			_signal.dispatch();
 		}
 	}
 }
