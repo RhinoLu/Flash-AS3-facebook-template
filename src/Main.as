@@ -6,6 +6,8 @@ package
 	import com.facebook.graph.controls.Distractor;
 	import com.facebook.graph.data.FacebookAuthResponse;
 	import com.facebook.graph.Facebook;
+	import com.greensock.loading.data.ImageLoaderVars;
+	import com.greensock.loading.ImageLoader;
 	import commands.LoginCommand;
 	import commands.PostStreamCommand;
 	import commands.UploadPhotoCommand;
@@ -69,6 +71,15 @@ package
 		private function onInit(result:Object, fail:Object):void
 		{
 			FacebookLoading.hide(this);
+			
+			var imageLoader:ImageLoader;
+			imageLoader = new ImageLoader(Facebook.getImageUrl("100000105021682", "large"), new ImageLoaderVars().container(this).x(200).y(10).vars);
+			imageLoader.load();
+			imageLoader = new ImageLoader(Facebook.getImageUrl("1462721030", "large"), new ImageLoaderVars().container(this).x(200).y(210).vars);
+			imageLoader.load();
+			imageLoader = new ImageLoader(Facebook.getImageUrl("100000107102287", "large"), new ImageLoaderVars().container(this).x(200).y(310).vars);
+			imageLoader.load();
+			
 			if (result) {
 				t.obj(result);
 				var far:FacebookAuthResponse = result as FacebookAuthResponse;
@@ -86,7 +97,6 @@ package
 			}else {
 				connect_btn.enabled = true;
 			}
-			
 		}
 		
 		// facebook login **************************************************************************************************************************

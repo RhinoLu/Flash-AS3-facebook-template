@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>FlashTemplate</title>
+	<meta name="description" content="測試貼文的 privacy 屬性" />
+	
+	<script type="text/javascript" src="//connect.facebook.net/zh_TW/all.js"></script>
+	<script src="js/swfobject.js"></script>
+	<script src="js/json2.js"></script>
+	<script>
+		var flashvars = {
+			APP_ID:"266759676730084"
+		};
+		var params = {
+			menu: "false",
+			scale: "noScale",
+			allowFullscreen: "true",
+			allowScriptAccess: "always",
+			bgcolor: "",
+			wmode: "direct" // can cause issues with FP settings & webcam
+		};
+		var attributes = {
+			id:"FlashTemplate",
+			name:"FlashTemplate"
+		};
+		swfobject.embedSWF(
+			"FlashTemplate.swf", 
+			"FlashTemplate", "100%", "100%", "10.0.0", 
+			"expressInstall.swf", 
+			flashvars, params, attributes);
+	</script>
+	<style>
+		html, body { height:100%; overflow:hidden; }
+		body { margin:0; }
+	</style>
+</head>
+<body>
+	<div id="fb-root"></div>
+	<div id="FlashTemplate">
+		<p><a href="http://www.adobe.com/go/getflashplayer">Get Adobe Flash player</a></p>
+	</div>
+	<script type="text/javascript">
+	
+		function winopen(url,winN,winW,winH)
+		{
+			winX = (screen.width-winW)/2;
+			winY = (screen.height-winH)/2;
+			popwin = window.open(url,winN,'left='+winX+',top='+winY+',width='+winW+',height='+winH+',toolbar=no,scrollbars=no,resizable=no,directories=no,status=no,location=no');
+			popwin.focus();
+		}
+		
+		function checkLike()
+		{
+			document["FlashTemplate"]["checkIfFans"]();
+		}
+		
+		var feed_obj = {};
+		feed_obj.to = "";
+		feed_obj.method = "feed";
+		feed_obj.name = "Flash Template, post by js sdk";
+		feed_obj.link = "http://lab.gotoandplay.com.tw/rhinolu/facebook/template/";
+		feed_obj.picture = "http://lab.gotoandplay.com.tw/rhinolu/facebook/template/images/fb.jpg";
+		feed_obj.description = "This is a test.";
+		
+		var privacy = {};
+		privacy.value = "CUSTOM";
+		privacy.friends = "SELF";
+		feed_obj.privacy = JSON.stringify(privacy);
+		
+		function myShare(_callBack)
+		{
+			FB.api('/me/feed', 'post', feed_obj,
+				function(response) {
+					document["FlashTemplate"][_callBack](response);
+				}
+			);
+		}
+		
+		function shareByDiaglogs(_callBack)
+		{
+			feed_obj.display = "popup";
+			FB.ui(feed_obj,
+				function(response) {
+					document["FlashTemplate"][_callBack](response);
+				}
+			);
+		}
+		
+	</script>
+</body>
+</html>
