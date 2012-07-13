@@ -34,6 +34,8 @@ package
 		private var publishJS_btn:PushButton;
 		private var publishDiaglogs_btn:PushButton;
 		private var uploadPhoto_btn:PushButton;
+		private var like_btn:PushButton;
+		private var publishWithoutLogin_btn:PushButton;
 		
 		
 		public function Main():void 
@@ -61,6 +63,25 @@ package
 			setupButton();
 		}
 		
+		// setup button ****************************************************************************************************************************
+		private function setupButton():void
+		{
+			connect_btn = new PushButton(this, 10, 50, "Connect", popupLogin);
+			connect_btn.enabled = false;
+			publishAS3_btn = new PushButton(this, 10, 80, "Publish By AS3", publishByAS3);
+			publishAS3_btn.enabled = false;
+			publishJS_btn = new PushButton(this, 10, 110, "Publish By JS", popupPublishJS);
+			publishJS_btn.enabled = false;
+			publishDiaglogs_btn = new PushButton(this, 10, 140, "Publish By Diaglogs", popupPublishDiaglogs);
+			publishDiaglogs_btn.enabled = false;
+			uploadPhoto_btn = new PushButton(this, 10, 170, "Upload Photo", uploadPhoto);
+			uploadPhoto_btn.enabled = false;
+			like_btn = new PushButton(this, 10, 200, "Like", doLike);
+			like_btn.enabled = false;
+			publishWithoutLogin_btn = new PushButton(this, 10, 230, "Publish Without Login", publishWithoutLogin);
+			//publishWithoutLogin_btn.enabled = false;
+		}
+		
 		// facebook init ***************************************************************************************************************************
 		private function facebookInit():void
 		{
@@ -77,8 +98,8 @@ package
 			imageLoader.load();
 			imageLoader = new ImageLoader(Facebook.getImageUrl("1462721030", "large"), new ImageLoaderVars().container(this).x(200).y(210).vars);
 			imageLoader.load();
-			imageLoader = new ImageLoader(Facebook.getImageUrl("100000107102287", "large"), new ImageLoaderVars().container(this).x(200).y(310).vars);
-			imageLoader.load();
+			//imageLoader = new ImageLoader(Facebook.getImageUrl("100000107102287", "large"), new ImageLoaderVars().container(this).x(200).y(310).vars);
+			//imageLoader.load();
 			
 			if (result) {
 				t.obj(result);
@@ -92,6 +113,8 @@ package
 					publishJS_btn.enabled = true;
 					publishDiaglogs_btn.enabled = true;
 					uploadPhoto_btn.enabled = true;
+					like_btn.enabled = true;
+					publishWithoutLogin_btn.enabled = true;
 					return;
 				}
 			}else {
@@ -120,6 +143,8 @@ package
 				publishJS_btn.enabled = true;
 				publishDiaglogs_btn.enabled = true;
 				uploadPhoto_btn.enabled = true;
+				like_btn.enabled = true;
+				publishWithoutLogin_btn.enabled = true;
 			} else if (type == ErrorEvent.ERROR) {
 				// 未登入
 				connect_btn.mouseEnabled = true;
@@ -156,6 +181,38 @@ package
 				trace("post 失敗 或 不分享");
 			}
 			publishAS3_btn.enabled = true;
+			FacebookLoading.hide(this);
+		}
+		
+		// facebook post by AS3 without login ******************************************************************************************************
+		private function publishWithoutLogin(e:MouseEvent):void 
+		{
+			publishWithoutLogin_btn.enabled = false;
+			
+			var postObj:Object = { };
+			postObj.to = "";
+			postObj.link = "http://lab.letsplay.com.tw/rhinolu/facebook/template/";
+			postObj.picture = "http://lab.letsplay.com.tw/rhinolu/facebook/template/images/share.jpg";
+			postObj.name = "Publish Without Login Test";
+			postObj.description = "test...";
+			//postObj.access_token = far.accessToken;
+			Facebook.ui("me/feed", postObj, onPublishWithoutLogin, "popup");
+			
+			FacebookLoading.show(this, -55, 10);
+		}
+		
+		private function onPublishWithoutLogin(result:Object, fail:Object = null):void 
+		{
+			if (result) {
+				t.obj(result);
+				trace("publishWithoutLogin 成功");
+			}
+			
+			if (fail) {
+				t.obj(fail);
+				trace("publishWithoutLogin 失敗");
+			}
+			publishWithoutLogin_btn.enabled = true;
 			FacebookLoading.hide(this);
 		}
 		
@@ -291,19 +348,33 @@ package
 			FacebookLoading.hide(this);
 		}
 		
-		// setup button ****************************************************************************************************************************
-		private function setupButton():void
+		// like ********************************************************************************************************************************
+		private function doLike(e:MouseEvent):void
 		{
-			connect_btn = new PushButton(this, 10, 50, "Connect", popupLogin);
-			connect_btn.enabled = false;
-			publishAS3_btn = new PushButton(this, 10, 80, "Publish By AS3", publishByAS3);
-			publishAS3_btn.enabled = false;
-			publishJS_btn = new PushButton(this, 10, 110, "Publish By JS", popupPublishJS);
-			publishJS_btn.enabled = false;
-			publishDiaglogs_btn = new PushButton(this, 10, 140, "Publish By Diaglogs", popupPublishDiaglogs);
-			publishDiaglogs_btn.enabled = false;
-			uploadPhoto_btn = new PushButton(this, 10, 170, "Upload Photo", uploadPhoto);
-			uploadPhoto_btn.enabled = false;
+			like_btn.mouseEnabled = false;
+			
+			var far:FacebookAuthResponse = Facebook.getAuthResponse();
+			var postObj:Object = { };
+			postObj.object = "http://google.com/";
+			postObj.access_token = far.accessToken;
+			Facebook.api("me/og.likes", onLiked, postObj, "POST");
+			
+			FacebookLoading.show(this, -55, 10);
+		}
+		
+		private function onLiked(result:Object, fail:Object):void 
+		{
+			if (result) {
+				t.obj(result);
+				trace("like 成功");
+			}
+			
+			if (fail) {
+				t.obj(fail);
+				trace("like 失敗");
+			}
+			like_btn.enabled = true;
+			FacebookLoading.hide(this);
 		}
 	}
 }

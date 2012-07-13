@@ -30,7 +30,6 @@ package
 				FacebookLoading.distractor.y = __y;
 				__container.addChild(FacebookLoading.distractor);
 			}
-			trace(__container.numChildren);
 		}
 		
 		public static function hide(__container:DisplayObjectContainer):void
