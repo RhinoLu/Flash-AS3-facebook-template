@@ -16,24 +16,24 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2012/7/13'</value>
+      <value>'2012/9/7'</value>
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>E:\Lab_Facebook\2012\FlashTemplate\src</path-element>
-      <path-element>E:\Lab_Facebook\2012\FlashTemplate\lib</path-element>
+      <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\src</path-element>
+      <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\lib</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>E:\Lab_Facebook\2012\FlashTemplate\lib\MinimalComps_0_9_9.swc</path-element>
-      <path-element>E:\Lab_Facebook\2012\FlashTemplate\lib\GraphAPI_Web_1_8_1.swc</path-element>
-      <path-element>E:\Lab_Facebook\2012\FlashTemplate\lib\as3-signals-v0.8.swc</path-element>
-      <path-element>E:\Lab_Facebook\2012\FlashTemplate\lib\greensock.swc</path-element>
-      <path-element>E:\Lab_Facebook\2012\FlashTemplate\lib\as3corelib.swc</path-element>
+      <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\lib\MinimalComps_0_9_9.swc</path-element>
+      <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\lib\GraphAPI_Web_1_8_1.swc</path-element>
+      <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\lib\as3-signals-v0.8.swc</path-element>
+      <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\lib\greensock.swc</path-element>
+      <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\lib\as3corelib.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>E:\Lab_Facebook\2012\FlashTemplate\src\Main.as</path-element>
+    <path-element>E:\Lab_Facebook\Flash-AS3-facebook-template\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>

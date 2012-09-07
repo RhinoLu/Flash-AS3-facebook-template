@@ -3,6 +3,7 @@ package
 	import com.adobe.serialization.json.JSON;
 	import com.adobe.images.JPGEncoder;
 	import com.bit101.components.PushButton;
+	import com.bit101.components.TextArea;
 	import com.facebook.graph.controls.Distractor;
 	import com.facebook.graph.data.FacebookAuthResponse;
 	import com.facebook.graph.Facebook;
@@ -36,7 +37,9 @@ package
 		private var uploadPhoto_btn:PushButton;
 		private var like_btn:PushButton;
 		private var publishWithoutLogin_btn:PushButton;
+		private var getCheckin_btn:PushButton;
 		
+		private var info:TextArea;
 		
 		public function Main():void 
 		{
@@ -66,6 +69,10 @@ package
 		// setup button ****************************************************************************************************************************
 		private function setupButton():void
 		{
+			info = new TextArea(this, 200, 50);
+			info.width  = 500;
+			info.height = 500;
+			
 			connect_btn = new PushButton(this, 10, 50, "Connect", popupLogin);
 			connect_btn.enabled = false;
 			publishAS3_btn = new PushButton(this, 10, 80, "Publish By AS3", publishByAS3);
@@ -80,6 +87,8 @@ package
 			like_btn.enabled = false;
 			publishWithoutLogin_btn = new PushButton(this, 10, 230, "Publish Without Login", publishWithoutLogin);
 			//publishWithoutLogin_btn.enabled = false;
+			getCheckin_btn = new PushButton(this, 10, 260, "Get Checkin", getCheckin);
+			getCheckin_btn.enabled = false;
 		}
 		
 		// facebook init ***************************************************************************************************************************
@@ -93,16 +102,17 @@ package
 		{
 			FacebookLoading.hide(this);
 			
-			var imageLoader:ImageLoader;
+			// 測試不用登入只要有ID也能撈到大頭照
+			/*var imageLoader:ImageLoader;
 			imageLoader = new ImageLoader(Facebook.getImageUrl("100000105021682", "large"), new ImageLoaderVars().container(this).x(200).y(10).vars);
 			imageLoader.load();
 			imageLoader = new ImageLoader(Facebook.getImageUrl("1462721030", "large"), new ImageLoaderVars().container(this).x(200).y(210).vars);
-			imageLoader.load();
+			imageLoader.load();*/
 			//imageLoader = new ImageLoader(Facebook.getImageUrl("100000107102287", "large"), new ImageLoaderVars().container(this).x(200).y(310).vars);
 			//imageLoader.load();
 			
 			if (result) {
-				t.obj(result);
+				info.text = t.obj(result);
 				var far:FacebookAuthResponse = result as FacebookAuthResponse;
 				if (far == null || far.uid == null) {
 					// 未登入
@@ -115,6 +125,7 @@ package
 					uploadPhoto_btn.enabled = true;
 					like_btn.enabled = true;
 					publishWithoutLogin_btn.enabled = true;
+					getCheckin_btn.enabled = true;
 					return;
 				}
 			}else {
@@ -145,6 +156,7 @@ package
 				uploadPhoto_btn.enabled = true;
 				like_btn.enabled = true;
 				publishWithoutLogin_btn.enabled = true;
+				getCheckin_btn.enabled = true;
 			} else if (type == ErrorEvent.ERROR) {
 				// 未登入
 				connect_btn.mouseEnabled = true;
@@ -176,9 +188,11 @@ package
 		private function onShare(type:String, obj:*= null):void
 		{
 			if (type == Event.COMPLETE) {
-				trace("post 成功");
+				//trace("post 成功");
+				info.text = "post success";
 			} else if (type == ErrorEvent.ERROR) {
-				trace("post 失敗 或 不分享");
+				//trace("post 失敗 或 不分享");
+				info.text = "post fail";
 			}
 			publishAS3_btn.enabled = true;
 			FacebookLoading.hide(this);
@@ -204,13 +218,15 @@ package
 		private function onPublishWithoutLogin(result:Object, fail:Object = null):void 
 		{
 			if (result) {
-				t.obj(result);
-				trace("publishWithoutLogin 成功");
+				//t.obj(result);
+				//trace("publishWithoutLogin 成功");
+				info.text = t.obj(result);
 			}
 			
 			if (fail) {
-				t.obj(fail);
-				trace("publishWithoutLogin 失敗");
+				//t.obj(fail);
+				//trace("publishWithoutLogin 失敗");
+				info.text = t.obj(fail);
 			}
 			publishWithoutLogin_btn.enabled = true;
 			FacebookLoading.hide(this);
@@ -236,9 +252,11 @@ package
 			publishJS_btn.enabled = true;
 			t.obj(result);
 			if (result && result.id) {
-				trace("post 成功");
+				//trace("post 成功");
+				info.text = "post success";
 			}else {
-				trace("post 失敗");
+				//trace("post 失敗");
+				info.text = "post fail";
 			}
 		}
 		
@@ -263,9 +281,11 @@ package
 			publishDiaglogs_btn.enabled = true;
 			t.obj(result);
 			if (result && result.post_id) {
-				trace("post 成功");
+				//trace("post 成功");
+				info.text = "post success";
 			}else {
-				trace("post 失敗");
+				//trace("post 失敗");
+				info.text = "post fail";
 			}
 		}
 		
@@ -297,16 +317,18 @@ package
 		{
 			if (result) {
 				t.obj(result);
-				trace(result.id);
-				trace(result.post_id);
-				trace("upload 成功");
+				info.text = t.obj(result);
+				//trace(result.id);
+				//trace(result.post_id);
+				//trace("upload 成功");
 				
 				tagPhoto(result.id);
 			}
 			
 			if (fail) {
-				t.obj(fail);
-				trace("upload 失敗");
+				//t.obj(fail);
+				info.text = t.obj(fail);
+				//trace("upload 失敗");
 			}
 			uploadPhoto_btn.enabled = true;
 			FacebookLoading.hide(this);
@@ -336,13 +358,15 @@ package
 		private function onTagged(result:Object, fail:Object):void 
 		{
 			if (result) {
-				t.obj(result);
-				trace("tag 成功");
+				//t.obj(result);
+				info.text = t.obj(result);
+				//trace("tag 成功");
 			}
 			
 			if (fail) {
-				t.obj(fail);
-				trace("tag 失敗");
+				//t.obj(fail);
+				info.text = t.obj(fail);
+				//trace("tag 失敗");
 			}
 			uploadPhoto_btn.enabled = true;
 			FacebookLoading.hide(this);
@@ -365,15 +389,42 @@ package
 		private function onLiked(result:Object, fail:Object):void 
 		{
 			if (result) {
-				t.obj(result);
-				trace("like 成功");
+				//t.obj(result);
+				info.text = t.obj(result);
+				//trace("like 成功");
 			}
 			
 			if (fail) {
-				t.obj(fail);
-				trace("like 失敗");
+				//t.obj(fail);
+				info.text = t.obj(fail);
+				//trace("like 失敗");
 			}
 			like_btn.enabled = true;
+			FacebookLoading.hide(this);
+		}
+		
+		// get checkin ************************************************************************************************************************
+		private function getCheckin(e:MouseEvent):void
+		{
+			getCheckin_btn.mouseEnabled = false;
+			// user_status permission to read the user's checkins.
+			// friends_status permission to read the user's friend's checkins.
+			Facebook.fqlQuery("SELECT coords, tagged_uids, page_id FROM checkin WHERE author_uid= me()", onGetCheckins);
+			FacebookLoading.show(this, -55, 10);
+		}
+		
+		private function onGetCheckins(result:Object, fail:Object):void 
+		{
+			if (result) {
+				//t.obj(result);
+				info.text = t.obj(result);
+			}
+			
+			if (fail) {
+				//t.obj(fail);
+				info.text = t.obj(fail);
+			}
+			getCheckin_btn.enabled = true;
 			FacebookLoading.hide(this);
 		}
 	}
